@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BackpackItem{% endblock %}
+
+{% block body %}
+    <h1>BackpackItem</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ backpack_item.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ backpack_item.name }}</td>
+            </tr>
+            <tr>
+                <th>BuyUrl</th>
+                <td>{{ backpack_item.buyUrl }}</td>
+            </tr>
+            <tr>
+                <th>AddDate</th>
+                <td>{{ backpack_item.addDate ? backpack_item.addDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModifyDate</th>
+                <td>{{ backpack_item.modifyDate ? backpack_item.modifyDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('backpack_item_index') }}">back to list</a>
+
+    <a href="{{ path('backpack_item_edit', {'id': backpack_item.id}) }}">edit</a>
+
+    {{ include('backpack_item/_delete_form.html.twig') }}
+{% endblock %}

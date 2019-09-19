@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\BackpackItem;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class BackpackItemType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('name')
+            ->add('buyUrl')
+            ->add('addDate')
+            ->add('modifyDate')
+            ->add('user')
+            ->add('season')
+            ->add('categoryItem')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => BackpackItem::class,
+        ]);
+    }
+}

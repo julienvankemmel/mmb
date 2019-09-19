@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CategoryBackpack{% endblock %}
+
+{% block body %}
+    <h1>Edit CategoryBackpack</h1>
+
+    {{ include('category_backpack/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('category_backpack_index') }}">back to list</a>
+
+    {{ include('category_backpack/_delete_form.html.twig') }}
+{% endblock %}

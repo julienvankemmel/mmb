@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BackpackItem index{% endblock %}
+
+{% block body %}
+    <h1>BackpackItem index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>BuyUrl</th>
+                <th>AddDate</th>
+                <th>ModifyDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for backpack_item in backpack_items %}
+            <tr>
+                <td>{{ backpack_item.id }}</td>
+                <td>{{ backpack_item.name }}</td>
+                <td>{{ backpack_item.buyUrl }}</td>
+                <td>{{ backpack_item.addDate ? backpack_item.addDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ backpack_item.modifyDate ? backpack_item.modifyDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('backpack_item_show', {'id': backpack_item.id}) }}">show</a>
+                    <a href="{{ path('backpack_item_edit', {'id': backpack_item.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('backpack_item_new') }}">Create new</a>
+{% endblock %}

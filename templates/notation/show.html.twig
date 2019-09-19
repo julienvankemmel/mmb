@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notation{% endblock %}
+
+{% block body %}
+    <h1>Notation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ notation.id }}</td>
+            </tr>
+            <tr>
+                <th>NumberLike</th>
+                <td>{{ notation.numberLike }}</td>
+            </tr>
+            <tr>
+                <th>NumberDislike</th>
+                <td>{{ notation.numberDislike }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('notation_index') }}">back to list</a>
+
+    <a href="{{ path('notation_edit', {'id': notation.id}) }}">edit</a>
+
+    {{ include('notation/_delete_form.html.twig') }}
+{% endblock %}

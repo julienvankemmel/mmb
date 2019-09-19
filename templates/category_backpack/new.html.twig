@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CategoryBackpack{% endblock %}
+
+{% block body %}
+    <h1>Create new CategoryBackpack</h1>
+
+    {{ include('category_backpack/_form.html.twig') }}
+
+    <a href="{{ path('category_backpack_index') }}">back to list</a>
+{% endblock %}
