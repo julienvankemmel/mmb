@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/backpack/item")
+ * @Route("/backpackitem")
  */
 class BackpackItemController extends AbstractController
 {
     /**
-     * @Route("/", name="backpack_item_index", methods={"GET"})
+     *@Route("/", name="backpack_item_index", methods={"GET"})
      */
     public function index(BackpackItemRepository $backpackItemRepository): Response
     {

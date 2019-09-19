@@ -54,7 +54,7 @@ class Backpack
     private $trip;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\country", inversedBy="backpacks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Country", inversedBy="backpacks")
      */
     private $country;
 

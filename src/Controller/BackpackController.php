@@ -19,10 +19,8 @@ class BackpackController extends AbstractController
      * @Route("/", name="backpack_index", methods={"GET"})
      */
     public function index(BackpackRepository $backpackRepository): Response
-    {
-        return $this->render('backpack/index.html.twig', [
-            'backpacks' => $backpackRepository->findAll(),
-        ]);
+    {   
+        return $this->json($backpackRepository->findAll());
     }
 
     /**
