@@ -68,27 +68,27 @@ class User implements UserInterface
     private $isActif;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\trip", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Trip", mappedBy="user")
      */
     private $trip;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\comment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
      */
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\notation", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Notation", mappedBy="user")
      */
     private $notation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\backpackItem", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\BackpackItem", mappedBy="user")
      */
     private $backpackItem;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\backpack", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Backpack", inversedBy="users")
      */
     private $backpack;
 
@@ -247,14 +247,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|trip[]
+     * @return Collection|Trip[]
      */
     public function getTrip(): Collection
     {
         return $this->trip;
     }
 
-    public function addTrip(trip $trip): self
+    public function addTrip(Trip $trip): self
     {
         if (!$this->trip->contains($trip)) {
             $this->trip[] = $trip;
@@ -264,7 +264,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeTrip(trip $trip): self
+    public function removeTrip(Trip $trip): self
     {
         if ($this->trip->contains($trip)) {
             $this->trip->removeElement($trip);
@@ -278,14 +278,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|comment[]
+     * @return Collection|Comment[]
      */
     public function getComment(): Collection
     {
         return $this->comment;
     }
 
-    public function addComment(comment $comment): self
+    public function addComment(Comment $comment): self
     {
         if (!$this->comment->contains($comment)) {
             $this->comment[] = $comment;
@@ -295,7 +295,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeComment(comment $comment): self
+    public function removeComment(Comment $comment): self
     {
         if ($this->comment->contains($comment)) {
             $this->comment->removeElement($comment);
@@ -309,14 +309,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|notation[]
+     * @return Collection|Notation[]
      */
     public function getNotation(): Collection
     {
         return $this->notation;
     }
 
-    public function addNotation(notation $notation): self
+    public function addNotation(Notation $notation): self
     {
         if (!$this->notation->contains($notation)) {
             $this->notation[] = $notation;
@@ -326,7 +326,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeNotation(notation $notation): self
+    public function removeNotation(Notation $notation): self
     {
         if ($this->notation->contains($notation)) {
             $this->notation->removeElement($notation);
@@ -340,14 +340,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|backpackItem[]
+     * @return Collection|BackpackItem[]
      */
     public function getBackpackItem(): Collection
     {
         return $this->backpackItem;
     }
 
-    public function addBackpackItem(backpackItem $backpackItem): self
+    public function addBackpackItem(BackpackItem $backpackItem): self
     {
         if (!$this->backpackItem->contains($backpackItem)) {
             $this->backpackItem[] = $backpackItem;
@@ -357,7 +357,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeBackpackItem(backpackItem $backpackItem): self
+    public function removeBackpackItem(BackpackItem $backpackItem): self
     {
         if ($this->backpackItem->contains($backpackItem)) {
             $this->backpackItem->removeElement($backpackItem);
@@ -371,14 +371,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|backpack[]
+     * @return Collection|Backpack[]
      */
     public function getBackpack(): Collection
     {
         return $this->backpack;
     }
 
-    public function addBackpack(backpack $backpack): self
+    public function addBackpack(Backpack $backpack): self
     {
         if (!$this->backpack->contains($backpack)) {
             $this->backpack[] = $backpack;
@@ -387,7 +387,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeBackpack(backpack $backpack): self
+    public function removeBackpack(Backpack $backpack): self
     {
         if ($this->backpack->contains($backpack)) {
             $this->backpack->removeElement($backpack);

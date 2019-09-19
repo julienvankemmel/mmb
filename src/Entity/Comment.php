@@ -39,12 +39,12 @@ class Comment
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\notation", mappedBy="comment")
+     * @ORM\OneToMany(targetEntity="App\Entity\Notation", mappedBy="comment")
      */
     private $notation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\country", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="comments")
      */
     private $country;
 
@@ -107,14 +107,14 @@ class Comment
     }
 
     /**
-     * @return Collection|notation[]
+     * @return Collection|Notation[]
      */
     public function getNotation(): Collection
     {
         return $this->notation;
     }
 
-    public function addNotation(notation $notation): self
+    public function addNotation(Notation $notation): self
     {
         if (!$this->notation->contains($notation)) {
             $this->notation[] = $notation;
@@ -124,7 +124,7 @@ class Comment
         return $this;
     }
 
-    public function removeNotation(notation $notation): self
+    public function removeNotation(Notation $notation): self
     {
         if ($this->notation->contains($notation)) {
             $this->notation->removeElement($notation);
@@ -137,12 +137,12 @@ class Comment
         return $this;
     }
 
-    public function getCountry(): ?country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
 
-    public function setCountry(?country $country): self
+    public function setCountry(?Country $country): self
     {
         $this->country = $country;
 

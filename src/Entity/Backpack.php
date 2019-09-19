@@ -39,17 +39,17 @@ class Backpack
     private $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\season", inversedBy="backpacks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Season", inversedBy="backpacks")
      */
     private $season;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\categoryBackpack", inversedBy="backpacks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CategoryBackpack", inversedBy="backpacks")
      */
     private $categoryBackpack;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\trip", inversedBy="backpacks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Trip", inversedBy="backpacks")
      */
     private $trip;
 
@@ -136,14 +136,14 @@ class Backpack
     }
 
     /**
-     * @return Collection|season[]
+     * @return Collection|Season[]
      */
     public function getSeason(): Collection
     {
         return $this->season;
     }
 
-    public function addSeason(season $season): self
+    public function addSeason(Season $season): self
     {
         if (!$this->season->contains($season)) {
             $this->season[] = $season;
@@ -161,12 +161,12 @@ class Backpack
         return $this;
     }
 
-    public function getCategoryBackpack(): ?categoryBackpack
+    public function getCategoryBackpack(): ?CategoryBackpack
     {
         return $this->categoryBackpack;
     }
 
-    public function setCategoryBackpack(?categoryBackpack $categoryBackpack): self
+    public function setCategoryBackpack(?CategoryBackpack $categoryBackpack): self
     {
         $this->categoryBackpack = $categoryBackpack;
 
@@ -174,14 +174,14 @@ class Backpack
     }
 
     /**
-     * @return Collection|trip[]
+     * @return Collection|Trip[]
      */
     public function getTrip(): Collection
     {
         return $this->trip;
     }
 
-    public function addTrip(trip $trip): self
+    public function addTrip(Trip $trip): self
     {
         if (!$this->trip->contains($trip)) {
             $this->trip[] = $trip;
@@ -190,7 +190,7 @@ class Backpack
         return $this;
     }
 
-    public function removeTrip(trip $trip): self
+    public function removeTrip(Trip $trip): self
     {
         if ($this->trip->contains($trip)) {
             $this->trip->removeElement($trip);
@@ -200,14 +200,14 @@ class Backpack
     }
 
     /**
-     * @return Collection|country[]
+     * @return Collection|Country[]
      */
     public function getCountry(): Collection
     {
         return $this->country;
     }
 
-    public function addCountry(country $country): self
+    public function addCountry(Country $country): self
     {
         if (!$this->country->contains($country)) {
             $this->country[] = $country;
@@ -216,7 +216,7 @@ class Backpack
         return $this;
     }
 
-    public function removeCountry(country $country): self
+    public function removeCountry(Country $country): self
     {
         if ($this->country->contains($country)) {
             $this->country->removeElement($country);

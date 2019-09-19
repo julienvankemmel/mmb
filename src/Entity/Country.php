@@ -34,12 +34,12 @@ class Country
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\trip", inversedBy="countries")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Trip", inversedBy="countries")
      */
     private $trip;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\notation", mappedBy="country")
+     * @ORM\OneToMany(targetEntity="App\Entity\Notation", mappedBy="country")
      */
     private $notation;
 
@@ -135,7 +135,7 @@ class Country
         return $this->trip;
     }
 
-    public function addTrip(trip $trip): self
+    public function addTrip(Trip $trip): self
     {
         if (!$this->trip->contains($trip)) {
             $this->trip[] = $trip;
@@ -144,7 +144,7 @@ class Country
         return $this;
     }
 
-    public function removeTrip(trip $trip): self
+    public function removeTrip(Trip $trip): self
     {
         if ($this->trip->contains($trip)) {
             $this->trip->removeElement($trip);
@@ -161,7 +161,7 @@ class Country
         return $this->notation;
     }
 
-    public function addNotation(notation $notation): self
+    public function addNotation(Notation $notation): self
     {
         if (!$this->notation->contains($notation)) {
             $this->notation[] = $notation;
@@ -171,7 +171,7 @@ class Country
         return $this;
     }
 
-    public function removeNotation(notation $notation): self
+    public function removeNotation(Notation $notation): self
     {
         if ($this->notation->contains($notation)) {
             $this->notation->removeElement($notation);

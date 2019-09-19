@@ -44,17 +44,17 @@ class BackpackItem
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\season", inversedBy="backpackItems")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Season", inversedBy="backpackItems")
      */
     private $season;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\categoryItem", inversedBy="backpackItems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CategoryItem", inversedBy="backpackItems")
      */
     private $categoryItem;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\notation", mappedBy="backpackItem")
+     * @ORM\OneToMany(targetEntity="App\Entity\Notation", mappedBy="backpackItem")
      */
     private $notation;
 
@@ -130,14 +130,14 @@ class BackpackItem
     }
 
     /**
-     * @return Collection|season[]
+     * @return Collection|Season[]
      */
     public function getSeason(): Collection
     {
         return $this->season;
     }
 
-    public function addSeason(season $season): self
+    public function addSeason(Season $season): self
     {
         if (!$this->season->contains($season)) {
             $this->season[] = $season;
@@ -146,7 +146,7 @@ class BackpackItem
         return $this;
     }
 
-    public function removeSeason(season $season): self
+    public function removeSeason(Season $season): self
     {
         if ($this->season->contains($season)) {
             $this->season->removeElement($season);
@@ -155,12 +155,12 @@ class BackpackItem
         return $this;
     }
 
-    public function getCategoryItem(): ?categoryItem
+    public function getCategoryItem(): ?CategoryItem
     {
         return $this->categoryItem;
     }
 
-    public function setCategoryItem(?categoryItem $categoryItem): self
+    public function setCategoryItem(?CategoryItem $categoryItem): self
     {
         $this->categoryItem = $categoryItem;
 
@@ -168,14 +168,14 @@ class BackpackItem
     }
 
     /**
-     * @return Collection|notation[]
+     * @return Collection|Notation[]
      */
     public function getNotation(): Collection
     {
         return $this->notation;
     }
 
-    public function addNotation(notation $notation): self
+    public function addNotation(Notation $notation): self
     {
         if (!$this->notation->contains($notation)) {
             $this->notation[] = $notation;
@@ -185,7 +185,7 @@ class BackpackItem
         return $this;
     }
 
-    public function removeNotation(notation $notation): self
+    public function removeNotation(Notation $notation): self
     {
         if ($this->notation->contains($notation)) {
             $this->notation->removeElement($notation);
