@@ -27,6 +27,21 @@ class SecurityController extends AbstractController
         SerializerInterface $serializer, ValidatorInterface $validator) {
         $values = json_decode($request->getContent());
         if (isset($values->username, $values->password)) {
+
+            // longueur minimale du password
+            if (strlen($values->password) < 6) {
+
+                $data = [
+                    'status' => 500,
+                    'violations' => [
+                        [
+                            'title' => 'Le mot de passe doit contenir 6 caractères minimum',
+                        ],
+                ]
+                ];
+                return new JsonResponse($data, 500);
+            }
+
             $user = new User();
             $user->setUsername($values->username);
             $user->setPassword($passwordEncoder->encodePassword($user,
