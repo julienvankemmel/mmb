@@ -1,6 +1,7 @@
 nelmio_cors:
     defaults:
-        origin_regex: true
+        # regex à false, mettre * dans le fichier .env pour les problèmes de CORS
+        origin_regex: false
         allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
