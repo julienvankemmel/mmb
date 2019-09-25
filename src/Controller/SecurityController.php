@@ -2,35 +2,88 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @Route("/apiuser")
+ */
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/register", name="register", methods={"POST"})
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
+    public function register(Request $request, UserPasswordEncoderInterface
+         $passwordEncoder, EntityManagerInterface $entityManager,
+        SerializerInterface $serializer, ValidatorInterface $validator) {
+        $values = json_decode($request->getContent());
+        if (isset($values->username, $values->password)) {
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+            // longueur minimale du password
+            if (strlen($values->password) < 6) {
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+                $data = [
+                    'status' => 500,
+                    'violations' => [
+                        [
+                            'title' => 'Le mot de passe doit contenir 6 caractères minimum',
+                        ],
+                ]
+                ];
+                return new JsonResponse($data, 500);
+            }
+
+            $user = new User();
+            $user->setUsername($values->username);
+            $user->setPassword($passwordEncoder->encodePassword($user,
+                $values->password));
+            $user->setRoles($user->getRoles());
+
+            // set le isActif à false en db
+            $user->setIsActif(false);
+            $errors = $validator->validate($user);
+            if (count($errors)) {
+                $errors = $serializer->serialize($errors, 'json');
+                return new Response($errors, 500, [
+                    'Content-Type' => 'application/json',
+                ]);
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $data = [
+                'status' => 201,
+                'message' => 'L\'utilisateur a été créé',
+            ];
+            return new JsonResponse($data, 201);
+        }
+        $data = [
+            'status' => 500,
+            'message' => 'Vous devez renseigner les clés usermail et
+password',
+        ];
+        return new JsonResponse($data, 500);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
-    public function logout()
+
+   /**
+    * @Route("/userdata", name="userdata", methods={"GET"})
+    * retourne les datas de l'utilisateur connecté
+    */
+    public function getUserData(Request $request, UserInterface $user)
     {
-        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+        $user = $this->getUser();
+        return $this->json([
+            'user' => $user,
+            
+        ]);
     }
 }
