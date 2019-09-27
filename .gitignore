@@ -11,6 +11,7 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+.DS_Store
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
