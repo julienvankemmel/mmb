@@ -86,4 +86,20 @@ password',
             
         ]);
     }
+
+/**
+ * @Route("api/login", name="login")
+ * @return JsonResponse
+ */
+public function login(): JsonResponse
+{
+    $user = $this->getUser();
+
+    return $this->json([
+
+        'username' => $user->getUseName(),
+        'id' => $user->getId()
+    ]);
+}
+    
 }
