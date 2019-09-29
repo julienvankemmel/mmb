@@ -12,12 +12,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/api")
+ * @Route("/backpack")
+ *
  */
 class BackpackController extends AbstractController
 {
     /**
-     * @Route("/backpack", name="backpack_index", methods={"GET"})
+     * @Route("/", name="backpack_index", methods={"GET"})
      */
     public function index(BackpackRepository $backpackRepository): Response
     {   
