@@ -62,30 +62,20 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="user_edit", methods={"PUT"})
      */
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager,
         SerializerInterface $serializer, ValidatorInterface $validator): Response {
         $values = json_decode($request->getContent());
-        if (isset($values)) {
+        if ($values) {
 
             $user->setFirstName($values->firstName);
             $user->setLastName($values->lastName);
             $user->setEmail($values->email);
             $user->setDateOfBirth(new \DateTime($values->dateOfBirth));
-             // enregistrement de l'image en db et dans le dossier public/uploads
-            /* $uploadedFile = $values->avatar;
-             if ($uploadedFile) {
-             $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-             $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-             $newFilename = uniqid().'.'.$uploadedFile->guessExtension();
-             $uploadedFile->move(
-                 $destination,
-                 $newFilename
-             );
-             $user->setAvatar($newFilename);
-         }*/
-
+            $user->setAvatar($values->avatar);
+             
+            
             $errors = $validator->validate($user);
             if (count($errors)) {
                 $errors = $serializer->serialize($errors, 'json');
