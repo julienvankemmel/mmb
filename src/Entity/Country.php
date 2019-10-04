@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"backpack:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
  */
 class Country
@@ -21,11 +22,24 @@ class Country
 
     /**
      * @ORM\Column(type="string", length=80)
+     * @Groups({"backpack:read"})
+     * 
      */
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $alpha2;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $alpha3;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Backpack", mappedBy="country")
+     * @Groups({"backpack:read"})
      */
     private $backpacks;
 
@@ -68,6 +82,31 @@ class Country
 
         return $this;
     }
+
+    public function getAlpha2(): ?string
+    {
+        return $this->alpha2;
+    }
+
+    public function setAlpha2(string $alpha2): self
+    {
+        $this->name = $alpha2;
+
+        return $this;
+    }
+
+    public function getAlpha3(): ?string
+    {
+        return $this->alpha3;
+    }
+
+    public function setAlpha3(string $alpha2): self
+    {
+        $this->name = $alpha3;
+
+        return $this;
+    }
+
 
     /**
      * @return Collection|Backpack[]
