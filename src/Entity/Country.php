@@ -17,6 +17,7 @@ class Country
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"backpack:read"})
      */
     private $id;
 
@@ -29,6 +30,7 @@ class Country
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"backpack:read"})
      */
     private $alpha2;
 
