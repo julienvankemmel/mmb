@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"backpack:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\BackpackItemRepository")
  */
 class BackpackItem
@@ -21,11 +22,13 @@ class BackpackItem
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"backpack:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"backpack:read"})
      */
     private $buyUrl;
 
@@ -51,6 +54,7 @@ class BackpackItem
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CategoryItem", inversedBy="backpackItems")
+     * @Groups({"backpack:read"})
      */
     private $categoryItem;
 
@@ -59,10 +63,16 @@ class BackpackItem
      */
     private $notation;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Backpack", mappedBy="backpackitem")
+     */
+    private $backpacks;
+
     public function __construct()
     {
         $this->season = new ArrayCollection();
         $this->notation = new ArrayCollection();
+        $this->backpacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +204,34 @@ class BackpackItem
             if ($notation->getBackpackItem() === $this) {
                 $notation->setBackpackItem(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Backpack[]
+     */
+    public function getBackpacks(): Collection
+    {
+        return $this->backpacks;
+    }
+
+    public function addBackpack(Backpack $backpack): self
+    {
+        if (!$this->backpacks->contains($backpack)) {
+            $this->backpacks[] = $backpack;
+            $backpack->addBackpackitem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBackpack(Backpack $backpack): self
+    {
+        if ($this->backpacks->contains($backpack)) {
+            $this->backpacks->removeElement($backpack);
+            $backpack->removeBackpackitem($this);
         }
 
         return $this;

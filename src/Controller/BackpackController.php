@@ -54,7 +54,7 @@ class BackpackController extends AbstractController
      */
     public function show(Backpack $backpack): Response
     {
-        return $this->render('backpack/show.html.twig', [
+        return $this->json([
             'backpack' => $backpack,
         ]);
     }
