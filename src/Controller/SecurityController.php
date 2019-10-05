@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/apiuser")
+ * @Route("/api")
  */
 class SecurityController extends AbstractController
 {
@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
             $data = [
                 'status' => 201,
-                'message' => 'L\'utilisateur a été créé',
+                'message' => 'Vous êtes inscrit, vous pouvez maintenant vous connecter.',
             ];
             return new JsonResponse($data, 201);
         }
@@ -86,4 +86,20 @@ password',
             
         ]);
     }
+
+/**
+ * @Route("api/login", name="login")
+ * @return JsonResponse
+ */
+public function login(): JsonResponse
+{
+    $user = $this->getUser();
+
+    return $this->json([
+
+        'username' => $user->getUseName(),
+        'id' => $user->getId()
+    ]);
+}
+    
 }

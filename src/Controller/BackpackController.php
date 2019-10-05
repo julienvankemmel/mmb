@@ -12,12 +12,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/api")
+ * @Route("/backpack")
+ *
  */
 class BackpackController extends AbstractController
 {
     /**
-     * @Route("/backpack", name="backpack_index", methods={"GET"})
+     * @Route("/", name="backpack_index", methods={"GET"})
      */
     public function index(BackpackRepository $backpackRepository): Response
     {   
@@ -53,7 +54,7 @@ class BackpackController extends AbstractController
      */
     public function show(Backpack $backpack): Response
     {
-        return $this->render('backpack/show.html.twig', [
+        return $this->json([
             'backpack' => $backpack,
         ]);
     }

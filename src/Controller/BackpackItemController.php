@@ -20,7 +20,7 @@ class BackpackItemController extends AbstractController
      */
     public function index(BackpackItemRepository $backpackItemRepository): Response
     {
-        return $this->render('backpack_item/index.html.twig', [
+        return $this->json([
             'backpack_items' => $backpackItemRepository->findAll(),
         ]);
     }
@@ -53,7 +53,7 @@ class BackpackItemController extends AbstractController
      */
     public function show(BackpackItem $backpackItem): Response
     {
-        return $this->render('backpack_item/show.html.twig', [
+        return $this->json([
             'backpack_item' => $backpackItem,
         ]);
     }

@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"backpack:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\BackpackRepository")
  */
 class Backpack
@@ -20,17 +21,21 @@ class Backpack
     private $id;
 
     /**
+     * 
      * @ORM\Column(type="string", length=255)
+     * @Groups({"backpack:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"backpack:read"})
      */
     private $lastModif;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"backpack:read"})
      */
     private $publishedDate;
 
@@ -46,6 +51,7 @@ class Backpack
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CategoryBackpack", inversedBy="backpacks")
+     * @Groups({"backpack:read"})
      */
     private $categoryBackpack;
 
@@ -56,8 +62,15 @@ class Backpack
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Country", inversedBy="backpacks")
+     * @Groups({"backpack:read"})
      */
     private $country;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\BackpackItem", inversedBy="backpacks")
+     * @Groups({"backpack:read"})
+     */
+    private $backpackitem;
 
     public function __construct()
     {
@@ -65,6 +78,7 @@ class Backpack
         $this->season = new ArrayCollection();
         $this->trip = new ArrayCollection();
         $this->country = new ArrayCollection();
+        $this->backpackitem = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +235,32 @@ class Backpack
     {
         if ($this->country->contains($country)) {
             $this->country->removeElement($country);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BackpackItem[]
+     */
+    public function getBackpackitem(): Collection
+    {
+        return $this->backpackitem;
+    }
+
+    public function addBackpackitem(BackpackItem $backpackitem): self
+    {
+        if (!$this->backpackitem->contains($backpackitem)) {
+            $this->backpackitem[] = $backpackitem;
+        }
+
+        return $this;
+    }
+
+    public function removeBackpackitem(BackpackItem $backpackitem): self
+    {
+        if ($this->backpackitem->contains($backpackitem)) {
+            $this->backpackitem->removeElement($backpackitem);
         }
 
         return $this;

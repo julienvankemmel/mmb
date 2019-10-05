@@ -4,11 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use DateTimeInterface;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/user")
@@ -20,16 +26,13 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+        return $this->json($userRepository->findAll());
     }
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
-    {
+    function new (Request $request): Response {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -59,23 +62,49 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="user_edit", methods={"PUT"})
      */
-    public function edit(Request $request, User $user): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager,
+        SerializerInterface $serializer, ValidatorInterface $validator): Response {
+        $values = json_decode($request->getContent());
+        if (isset($values)) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($values->firstName) {
+            $user->setFirstName($values->firstName);
+            } elseif ($values->lastName) {
+            $user->setLastName($values->lastName);
+            } elseif ($values->email) {
+            $user->setEmail($values->email);
+            } elseif ($values->dateOfBirth) {
+            $user->setDateOfBirth(new \DateTime($values->dateOfBirth));
+            } elseif ($values->avatar) {
+             $user->setAvatar($values->avatar);
+            }
+            
+            $errors = $validator->validate($user);
+            if (count($errors)) {
+                $errors = $serializer->serialize($errors, 'json');
+                return new Response($errors, 500, [
+                    'Content-Type' => 'application/json',
+                ]);
+            }
 
-            return $this->redirectToRoute('user_index');
+            $this->getDoctrine()->getManager()->flush($user);
+
+            $data = [
+                'status' => 201,
+                'message' => 'Votre profil a été mis à jour',
+            ];
+            return new JsonResponse($data, 201);
+
         }
 
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
+        $data = [
+            'status' => 500,
+            'message' => 'Erreur lors de l\'enregistrement',
+        ];
+        return new JsonResponse($data, 500);
+
     }
 
     /**
@@ -83,7 +112,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
@@ -91,4 +120,5 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
+
 }
