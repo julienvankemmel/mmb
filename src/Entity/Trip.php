@@ -125,6 +125,13 @@ class Trip
         return $this;
     }
 
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Backpack[]
      */
