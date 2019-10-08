@@ -17,18 +17,21 @@ class BackpackItem
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $buyUrl;
 

@@ -71,13 +71,14 @@ class UserController extends AbstractController
 
             if ($values->firstName) {
             $user->setFirstName($values->firstName);
-            } elseif ($values->lastName) {
+            } if ($values->lastName) {
             $user->setLastName($values->lastName);
-            } elseif ($values->email) {
+            } if ($values->email) {
             $user->setEmail($values->email);
-            } elseif ($values->dateOfBirth) {
+            } if ($values->dateOfBirth) {
             $user->setDateOfBirth(new \DateTime($values->dateOfBirth));
-            } elseif ($values->avatar) {
+            } 
+            if ($values->avatar) {
              $user->setAvatar($values->avatar);
             }
             
