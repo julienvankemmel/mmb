@@ -67,14 +67,20 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager,
         SerializerInterface $serializer, ValidatorInterface $validator): Response {
         $values = json_decode($request->getContent());
-        if ($values) {
+        if (isset($values)) {
 
+            if ($values->firstName) {
             $user->setFirstName($values->firstName);
+            } if ($values->lastName) {
             $user->setLastName($values->lastName);
+            } if ($values->email) {
             $user->setEmail($values->email);
+            } if ($values->dateOfBirth) {
             $user->setDateOfBirth(new \DateTime($values->dateOfBirth));
-            $user->setAvatar($values->avatar);
-             
+            } 
+            if ($values->avatar) {
+             $user->setAvatar($values->avatar);
+            }
             
             $errors = $validator->validate($user);
             if (count($errors)) {

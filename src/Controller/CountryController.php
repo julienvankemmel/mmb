@@ -20,9 +20,14 @@ class CountryController extends AbstractController
      */
     public function index(CountryRepository $countryRepository): Response
     {
-        return $this->render('country/index.html.twig', [
-            'countries' => $countryRepository->findAll(),
+        $countries = $countryRepository->findAll();
+
+        return $this->json([
+    
+           'countries' => $countries,
+
         ]);
+       
     }
 
     /**
@@ -49,11 +54,12 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="country_show", methods={"GET"})
+     * @Route("/{id}", name="country_show", methods={"GET", "POST"})
      */
     public function show(Country $country): Response
     {
-        return $this->render('country/show.html.twig', [
+        
+        return $this->json([
             'country' => $country,
         ]);
     }
