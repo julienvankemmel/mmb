@@ -4,10 +4,12 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"trip:read"}})
+ * @ApiResource(normalizationContext={"groups"={"user:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\TripRepository")
  */
 class Trip
@@ -16,41 +18,49 @@ class Trip
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"trip:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"trip:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"trip:read"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"trip:read"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"trip:read"})
      */
     private $endDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trip")
+     * @Groups({"trip:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Backpack", mappedBy="trip")
+     * @Groups({"user:read"})
      */
     private $backpacks;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Country", mappedBy="trip")
+     * @Groups({"trip:read"})
      */
     private $countries;
 

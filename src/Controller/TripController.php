@@ -47,10 +47,12 @@ class TripController extends AbstractController
         $trip->setEndDate(new \DateTime($values->endDate));
         $trip->setContent($values->content);
         $trip->setUser($user);
-        $trip->setCountry($country);
+        $trip->addCountry($country);
+        $country->addTrip($trip);
 
         $this->getDoctrine()->getManager()->persist($trip);
-        $this->getDoctrine()->getManager()->flush($trip);
+        $this->getDoctrine()->getManager()->persist($country);
+        $this->getDoctrine()->getManager()->flush();
 
         $data = [
             'status' => 201,
