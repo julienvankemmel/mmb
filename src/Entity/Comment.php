@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"comment:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
@@ -23,12 +23,14 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"comment:read"})
      * @Groups({"user:read"})
      */
     private $text;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"comment:read"})
      * @Groups({"user:read"})
      */
     private $publishDate;
@@ -41,6 +43,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comment")
+     * @Groups({"comment:read"})
      */
     private $user;
 
@@ -51,6 +54,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="comments")
+     * @Groups({"comment:read"})
      */
     private $country;
 

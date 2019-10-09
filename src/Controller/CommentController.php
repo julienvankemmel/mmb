@@ -20,12 +20,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/", name="comment_index", methods={"GET"})
+     * @Route("/{countryId}", name="comment_index", methods={"GET"})
      */
-    public function index(CommentRepository $commentRepository): Response
+    public function index(CommentRepository $commentRepository,$countryId): Response
     {
-        return $this->render('comment/index.html.twig', [
-            'comments' => $commentRepository->findAll(),
+        $country = $this->getDoctrine()->getRepository(Country::class)->find($countryId);
+        $comment = $country->getComments();
+        return $this->json([
+            'comment' => $comment,
         ]);
     }
 
