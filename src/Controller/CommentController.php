@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Comment;
 use App\Entity\Country;
 use App\Form\CommentType;
@@ -9,6 +10,8 @@ use App\Repository\CommentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -29,26 +32,29 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="comment_new", methods={"GET","POST"})
+     * @Route("/new/{idCountry}/{idUser}", name="comment_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(?UserInterface $user, Request $request, $idCountry, $idUser)
     {
+        $value = json_decode($request->getContent());
+        
+        $country = $this->getDoctrine()->getRepository(Country::class)->find($idCountry);
+        $user = $this->getDoctrine()->getRepository(User::class)->find($idUser);
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        // on crée la date
+        $comment->setPublishDate(new \DateTime('now'));
+        $comment->setUser($user);
+        $comment->setCountry($country);
+        $comment->setText($value->text);
+        $this->getDoctrine()->getManager()->persist($comment);
+        $this->getDoctrine()->getManager()->flush($comment);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($comment);
-            $entityManager->flush();
+        $data = [
+            'status' => 201,
+            'message' => 'ok',
+        ];
+        return new JsonResponse($data, 201);  
 
-            return $this->redirectToRoute('comment_index');
-        }
-
-        return $this->render('comment/new.html.twig', [
-            'comment' => $comment,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**

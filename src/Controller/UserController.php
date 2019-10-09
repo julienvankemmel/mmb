@@ -77,7 +77,8 @@ class UserController extends AbstractController
             $user->setEmail($values->email);
             } if ($values->dateOfBirth) {
             $user->setDateOfBirth(new \DateTime($values->dateOfBirth));
-            } if ($values->avatar) {
+            } 
+            if ($values->avatar) {
              $user->setAvatar($values->avatar);
             }
             

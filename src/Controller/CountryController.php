@@ -54,10 +54,11 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="country_show", methods={"GET"})
+     * @Route("/{id}", name="country_show", methods={"GET", "POST"})
      */
     public function show(Country $country): Response
     {
+        
         return $this->json([
             'country' => $country,
         ]);

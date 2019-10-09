@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(normalizationContext={"groups"={"user:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, message="Ce pseudo est déjà utilisé")
  */
@@ -21,17 +21,20 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"comment:read"})
+     * @Groups({"user:read"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read"})
      */
     private $roles = [];
 
@@ -43,28 +46,32 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=90, nullable=true)
+     * @Groups({"user:read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"user:read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"user:read"})
      */
     private $dateOfBirth;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
      * @Assert\Email(message = "Cet email n'est pas valide.")
+     * @Groups({"user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
      */
     private $avatar;
 
@@ -75,6 +82,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trip", mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $trip;
 
@@ -86,16 +94,19 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notation", mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $notation;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BackpackItem", mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $backpackItem;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Backpack", inversedBy="users")
+     * @Groups({"user:read"})
      */
     private $backpack;
 

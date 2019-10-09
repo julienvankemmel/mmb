@@ -17,23 +17,27 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"comment:read"})
+     * @Groups({"user:read"})
      */
     private $text;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"comment:read"})
+     * @Groups({"user:read"})
      */
     private $publishDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"user:read"})
      */
     private $modifyDate;
 
