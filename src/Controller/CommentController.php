@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Country;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/comment")
@@ -16,12 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/", name="comment_index", methods={"GET"})
+     * @Route("/{countryId}", name="comment_index", methods={"GET"})
      */
-    public function index(CommentRepository $commentRepository): Response
+    public function index(CommentRepository $commentRepository,$countryId): Response
     {
-        return $this->render('comment/index.html.twig', [
-            'comments' => $commentRepository->findAll(),
+        $country = $this->getDoctrine()->getRepository(Country::class)->find($countryId);
+        $comment = $country->getComments();
+        return $this->json([
+            'comment' => $comment,
         ]);
     }
 
