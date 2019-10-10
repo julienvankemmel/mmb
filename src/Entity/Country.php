@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(normalizationContext={"groups"={"trip:read"}})
+ * @ApiResource(normalizationContext={"groups"={"trip:read"},"groups"={"backpack:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
  */
 class Country
@@ -24,6 +24,7 @@ class Country
     /**
      * @ORM\Column(type="string", length=80)
      * @Groups({"trip:read"})
+     * @Groups({"backpack:read"})
      * 
      */
     private $name;
