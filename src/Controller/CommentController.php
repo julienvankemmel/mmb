@@ -32,7 +32,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/new/{idCountry}/{idUser}", name="comment_new", methods={"GET","POST"})
+     * @Route("/new/{idUser}/{idCountry}", name="comment_new", methods={"GET","POST"})
      */
     public function new(?UserInterface $user, Request $request, $idCountry, $idUser)
     {
