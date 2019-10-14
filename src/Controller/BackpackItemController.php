@@ -10,6 +10,7 @@ use App\Repository\BackpackItemRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -28,11 +29,11 @@ class BackpackItemController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="backpack_item_new", methods={"GET","POST"})
+     * @Route("/new/{idUser}/{idBackpack}", name="backpack_item_new", methods={"GET","POST"})
      */
-    public function new(Request $request,$idUser,$idBackpack): Response
+    public function new(?UserInterface $user,Request $request,$idUser,$idBackpack): Response
     {
-        $value = json_decode($request->getContent());
+        $value = $request->getContent();
 
         $user = $this->getDoctrine()->getRepository(User::class)->find($idUser);
         $backpack = $this->getDoctrine()->getRepository(Backpack::class)->find($idBackpack);
