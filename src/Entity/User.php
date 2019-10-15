@@ -110,6 +110,11 @@ class User implements UserInterface
      */
     private $backpack;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\backpack", mappedBy="user")
+     */
+    private $backpacks;
+
     public function __construct()
     {
         $this->trip = new ArrayCollection();
@@ -117,6 +122,7 @@ class User implements UserInterface
         $this->notation = new ArrayCollection();
         $this->backpackItem = new ArrayCollection();
         $this->backpack = new ArrayCollection();
+        $this->backpacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -412,5 +418,13 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|backpack[]
+     */
+    public function getBackpacks(): Collection
+    {
+        return $this->backpacks;
     }
 }

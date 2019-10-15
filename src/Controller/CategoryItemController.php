@@ -20,9 +20,7 @@ class CategoryItemController extends AbstractController
      */
     public function index(CategoryItemRepository $categoryItemRepository): Response
     {
-        return $this->render('category_item/index.html.twig', [
-            'category_items' => $categoryItemRepository->findAll(),
-        ]);
+        return $this->json($categoryItemRepository->findAll());
     }
 
     /**

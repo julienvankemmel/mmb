@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Entity\Backpack;
 use App\Entity\BackpackItem;
 use App\Form\BackpackItemType;
 use App\Repository\BackpackItemRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/backpackitem")
@@ -26,26 +29,34 @@ class BackpackItemController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="backpack_item_new", methods={"GET","POST"})
+     * @Route("/new/{idUser}/{idBackpack}", name="backpack_item_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(?UserInterface $user,Request $request,$idUser,$idBackpack): Response
     {
-        $backpackItem = new BackpackItem();
-        $form = $this->createForm(BackpackItemType::class, $backpackItem);
-        $form->handleRequest($request);
+        $value = $request->getContent();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($idUser);
+        $backpack = $this->getDoctrine()->getRepository(Backpack::class)->find($idBackpack);
+
+        $backpackItem = new BackpackItem();
+        
+        $backpackItem->setAddDate(new \DateTime('now'));
+        $backpackItem->setModifyDate(new \DateTime('now'));
+        $backpackItem->setName($value->name);
+        $backpackItem->setUser($user);
+        $backpackItem->setCategoryItem($value->categorie);
+        $backpackItem->setBackpacks($backpack);
+
+      
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($backpackItem);
-            $entityManager->flush();
+            $entityManager->flush($backpackItem);
 
-            return $this->redirectToRoute('backpack_item_index');
-        }
-
-        return $this->render('backpack_item/new.html.twig', [
-            'backpack_item' => $backpackItem,
-            'form' => $form->createView(),
-        ]);
+            $data = [
+                'status' => 201,
+                'message' => 'ok',
+            ];
+            return new JsonResponse($data, 201);  
     }
 
     /**

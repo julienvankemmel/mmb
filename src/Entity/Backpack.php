@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(normalizationContext={"groups"={"backpack:read"}})
+ * @ApiResource(normalizationContext={"groups"={"backpack:read"},"groups"={"user:read"}})
  * @ORM\Entity(repositoryClass="App\Repository\BackpackRepository")
  */
 class Backpack
@@ -17,6 +17,7 @@ class Backpack
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
@@ -37,11 +38,13 @@ class Backpack
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $publishedDate;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="backpack")
+     * 
      */
     private $users;
 
@@ -53,23 +56,27 @@ class Backpack
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CategoryBackpack", inversedBy="backpacks")
      * @Groups({"backpack:read"})
+     * 
      */
     private $categoryBackpack;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Trip", inversedBy="backpacks")
+     * @Groups({"user:read"})
      */
     private $trip;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Country", inversedBy="backpacks")
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $country;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\BackpackItem", inversedBy="backpacks")
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $backpackitem;
 
