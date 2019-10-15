@@ -13,12 +13,12 @@ class BackpackItemType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('buyUrl')
-            ->add('addDate')
-            ->add('modifyDate')
-            ->add('user')
-            ->add('season')
-            ->add('categoryItem')
+           
+         
+           
+          
+          
+           
         ;
     }
 

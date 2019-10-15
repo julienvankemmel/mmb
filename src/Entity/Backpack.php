@@ -24,6 +24,7 @@ class Backpack
      * 
      * @ORM\Column(type="string", length=255)
      * @Groups({"backpack:read"})
+     * @Groups({"user:read"})
      */
     private $name;
 
