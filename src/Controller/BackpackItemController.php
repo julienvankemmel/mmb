@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Backpack;
 use App\Entity\BackpackItem;
+use App\Entity\CategoryItem;
 use App\Form\BackpackItemType;
 use App\Repository\BackpackItemRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -33,10 +35,11 @@ class BackpackItemController extends AbstractController
      */
     public function new(?UserInterface $user,Request $request,$idUser,$idBackpack): Response
     {
-        $value = $request->getContent();
+        $value = json_decode($request->getContent());
 
         $user = $this->getDoctrine()->getRepository(User::class)->find($idUser);
         $backpack = $this->getDoctrine()->getRepository(Backpack::class)->find($idBackpack);
+        $category = $this->getDoctrine()->getRepository(CategoryItem::class)->find($value->category);
 
         $backpackItem = new BackpackItem();
         
@@ -44,13 +47,13 @@ class BackpackItemController extends AbstractController
         $backpackItem->setModifyDate(new \DateTime('now'));
         $backpackItem->setName($value->name);
         $backpackItem->setUser($user);
-        $backpackItem->setCategoryItem($value->categorie);
-        $backpackItem->setBackpacks($backpack);
+        $backpackItem->setCategoryItem($category);
+        $backpackItem->addBackpack($backpack);
 
       
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($backpackItem);
-            $entityManager->flush($backpackItem);
+            $entityManager->flush();
 
             $data = [
                 'status' => 201,
