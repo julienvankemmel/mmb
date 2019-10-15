@@ -93,16 +93,19 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trip_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="trip_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Trip $trip): Response
+    public function delete(Request $request, $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trip->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($trip);
-            $entityManager->flush();
-        }
+       $trip = $this->getDoctrine()->getRepository(Trip::class)->find($id);
+       $this->getDoctrine()->getManager()->remove($trip);
+       $this->getDoctrine()->getManager()->flush();
+       
+       $data = [
+        'status' => 201,
+        'message' => 'Votre voyage est enregistré avec succés.'
+    ];
+    return new JsonResponse($data, 201);
 
-        return $this->redirectToRoute('trip_index');
     }
 }

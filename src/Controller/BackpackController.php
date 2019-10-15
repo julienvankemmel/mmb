@@ -94,17 +94,20 @@ class BackpackController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="backpack_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="backpack_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Backpack $backpack): Response
+    public function delete(Request $request, $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$backpack->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($backpack);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('backpack_index');
+        $backpack = $this->getDoctrine()->getRepository(Backpack::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($backpack);
+        $this->getDoctrine()->getManager()->flush();
+        
+        $data = [
+         'status' => 201,
+         'message' => 'Votre voyage est enregistré avec succés.'
+     ];
+     return new JsonResponse($data, 201);
+ 
     }
 
    
